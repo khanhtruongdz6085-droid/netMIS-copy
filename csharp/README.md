@@ -2,6 +2,8 @@
 
 Bản console C# chuyển từ bản Java đã sửa lỗi kết thúc phiên, commit `ab383292d590b59135735dd069f693c50d9ea636`. Bản Java ở thư mục `src/` được giữ lại. Mỗi lớp, interface và enum C# có file riêng.
 
+Xem [sơ đồ quan hệ, PK/FK và ví dụ LINQ](SO_DO_QUAN_HE_LINQ.md) để xác định nguồn dữ liệu và đường liên kết giữa các model.
+
 ## Mở và chạy
 
 Cài **.NET 8 SDK**. Với Visual Studio 2022, dùng phiên bản 17.8 trở lên, cài workload **.NET desktop development**, rồi mở `NetCafeMis.sln`. Chọn `NetCafeMis` làm startup project để chạy dữ liệu mẫu, hoặc `NetCafeMis.Checks` để chạy kiểm tra.
