@@ -2,3 +2,7 @@
 /target/
 /.idea/
 *.iml
+/csharp/**/bin/
+/csharp/**/obj/
+/csharp/.vs/
+*.user

@@ -2,6 +2,8 @@
 
 Project Maven Java 8 chạy console trên IntelliJ IDEA, dựa theo cách tổ chức SmartDorm và các thực thể trong đặc tả. Mỗi class, interface và enum nằm trong một file riêng. Dữ liệu dùng List<T> trong bộ nhớ.
 
+Phiên bản C# .NET 8 nằm riêng trong [`csharp/`](csharp/README.md), có solution cho Visual Studio, cùng nghiệp vụ, dữ liệu mẫu và kiểm tra kết thúc phiên. Bản Java vẫn ở `src/` và chạy theo hướng dẫn bên dưới.
+
 ## Clone và mở bằng IntelliJ IDEA
 
 1. Clone repo private bằng tài khoản GitHub có quyền truy cập:
