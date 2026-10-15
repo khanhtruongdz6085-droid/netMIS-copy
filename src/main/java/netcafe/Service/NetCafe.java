@@ -1,6 +1,7 @@
 package netcafe.Service;
 
 import netcafe.enums.*;
+import netcafe.dao.*;
 import netcafe.model.*;
 import netcafe.model.NetSpecs.*;
 import netcafe.model.customer.Customer;
@@ -17,6 +18,29 @@ public final class NetCafe {
     private final FoodOrderService foodOrderService = new FoodOrderService(data);
     private final ReceiptService receiptService = new ReceiptService(data);
     private final PaymentService paymentService = new PaymentService(data);
+
+    // DAOs query the same backing lists and object references as the services.
+    private final ComputerSectionDAO computerSectionDAO = new ComputerSectionDAO(data.sections, data.computers);
+    private final ComputerDAO computerDAO = new ComputerDAO(data.computers, data.sessions);
+    private final CustomerDAO customerDAO = new CustomerDAO(data.customers, data.sessions, data.receipts, data.payments);
+    private final CustomerAccountDAO customerAccountDAO = new CustomerAccountDAO(data.accounts);
+    private final SessionDAO sessionDAO = new SessionDAO(data.sessions, data.computers, data.services, data.receipts);
+    private final FoodDAO foodDAO = new FoodDAO(data.foods, data.services);
+    private final FoodServiceDAO foodServiceDAO = new FoodServiceDAO(data.services, data.sessions);
+    private final EmployeeDAO employeeDAO = new EmployeeDAO(data.employees, data.services, data.receipts, data.payments);
+    private final ReceiptDAO receiptDAO = new ReceiptDAO(data.receipts, data.payments);
+    private final PaymentDAO paymentDAO = new PaymentDAO(data.payments, data.sections);
+
+    public ComputerSectionDAO getComputerSectionDAO() { return computerSectionDAO; }
+    public ComputerDAO getComputerDAO() { return computerDAO; }
+    public CustomerDAO getCustomerDAO() { return customerDAO; }
+    public CustomerAccountDAO getCustomerAccountDAO() { return customerAccountDAO; }
+    public SessionDAO getSessionDAO() { return sessionDAO; }
+    public FoodDAO getFoodDAO() { return foodDAO; }
+    public FoodServiceDAO getFoodServiceDAO() { return foodServiceDAO; }
+    public EmployeeDAO getEmployeeDAO() { return employeeDAO; }
+    public ReceiptDAO getReceiptDAO() { return receiptDAO; }
+    public PaymentDAO getPaymentDAO() { return paymentDAO; }
 
     // Getter
     public CatalogService getCatalogService() { return catalogService; }

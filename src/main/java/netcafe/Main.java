@@ -98,6 +98,11 @@ public final class Main {
   }
   public static void main(String[] args) {
     NetCafe cafe=sample();
+    if (args.length == 1 && "--queries".equals(args[0])) {
+      QueryDemo.print(cafe);
+      return;
+    }
+    if (args.length != 0) throw new IllegalArgumentException("Usage: Main [--queries]");
     for (Receipt r:cafe.getReceipts()) System.out.println(r.getReceiptId()+" session="+r.getSession().getSessionId()+" computer="+r.getComputerAmount()+" service="+r.getServiceAmount()+" total="+r.getTotalAmount());
     System.out.println("Collected="+cafe.collectedAmount());
     for (Session s:cafe.getSessions()) System.out.println(s.getSessionId()+" " +s.getSessionStatus()+" " +s.getComputer().getComputerId());

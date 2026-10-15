@@ -1,0 +1,93 @@
+Q01 May dang trong
+  PC01 section=Khu thường hourlyPrice=12000
+  PC03 section=Khu VIP hourlyPrice=20000
+  PC04 section=Khu VIP hourlyPrice=20000
+  PC06 section=Khu VIP hourlyPrice=20000
+Q02 May bao tri
+  PC05 section=Khu thường hourlyPrice=12000
+Q03 So may theo khu va trang thai
+  CS01 AVAILABLE count=1
+  CS01 IN_USE count=1
+  CS01 MAINTENANCE count=1
+  CS02 AVAILABLE count=3
+  CS02 IN_USE count=0
+  CS02 MAINTENANCE count=0
+Q04 Khu gia gio > 15000
+  CS02 Khu VIP hourlyPrice=20000
+Q05 Lich su may PC01
+  S01 customer=Lamine Yamal computer=PC01 section=Khu thường start=2026-10-05T08:00 end=2026-10-05T10:00 status=COMPLETED
+Q06 Phien dang hoat dong
+  S04 customer=Lamine Yamal computer=PC02 section=Khu thường start=2026-10-05T11:00 end=null status=ACTIVE
+Q07 Phien hoan tat >= 120 phut
+  S01 customer=Lamine Yamal computer=PC01 section=Khu thường start=2026-10-05T08:00 end=2026-10-05T10:00 status=COMPLETED minutes=120
+Q08 Phut choi theo may, ngay 2026-10-05
+  PC01 minutes=120
+  PC02 minutes=0
+  PC03 minutes=90
+  PC04 minutes=60
+  PC05 minutes=0
+  PC06 minutes=0
+Q09 May chua tung su dung
+  PC05 section=Khu thường hourlyPrice=12000
+  PC06 section=Khu VIP hourlyPrice=20000
+Q10 Tam tinh phien ACTIVE tai 12:00
+  S04 amount=12000
+Q11 Lich su khach C01
+  S04 customer=Lamine Yamal computer=PC02 section=Khu thường start=2026-10-05T11:00 end=null status=ACTIVE
+  S01 customer=Lamine Yamal computer=PC01 section=Khu thường start=2026-10-05T08:00 end=2026-10-05T10:00 status=COMPLETED
+Q12 Khach chua tung choi
+  C04 Lionel Messi
+Q13 So phien hoan tat theo khach
+  C01 count=1
+  C02 count=1
+  C03 count=1
+  C04 count=0
+Q14 Mon gia <= 15000
+  F03 Snack price=7000
+  F01 Mì ly price=13000
+  F02 Nước ngọt price=15000
+Q15 Chi tiet goi mon phien S01
+  SV01 time=2026-10-05T08:20 employee=Erik TenHag food=Mì ly quantity=1 price=15000 amount=15000
+  SV01 time=2026-10-05T08:20 employee=Erik TenHag food=Nước ngọt quantity=1 price=10000 amount=10000
+Q16 Tong tien mon goc tung phien
+  S02 amount=30000
+  S01 amount=25000
+  S04 amount=20000
+  S03 amount=0
+Q17 Phien hoan tat khong goi mon
+  S03 customer=Cristiano Ronaldo computer=PC04 section=Khu VIP start=2026-10-05T10:00 end=2026-10-05T11:00 status=COMPLETED
+Q18 Mon duoc goi nhieu nhat
+  F01 Mì ly quantity=3
+  F02 Nước ngọt quantity=3
+Q19 Lan goi mon > 20000
+  SV02 customer=Bruno Fernades total=30000
+  SV01 customer=Lamine Yamal total=25000
+Q20 Goi mon theo nhan vien, ngay 2026-10-05
+  E01 count=2 amount=45000
+  E02 count=1 amount=30000
+  E03 count=0 amount=0
+Q21 Hoa don chua thanh toan
+  R02 session=S02 customer=Bruno Fernades employee=Erik TenHag total=60000
+Q22 Thuc thu theo ngay
+  2026-10-05 amount=49000
+Q23 Thuc thu theo phuong thuc
+  BANK_TRANSFER count=0 amount=0
+  CARD count=0 amount=0
+  CASH count=1 amount=49000
+Q24 Hoa don lon nhat
+  R02 session=S02 customer=Bruno Fernades employee=Erik TenHag total=60000
+Q25 Ba khach tra nhieu nhat
+  C01 Lamine Yamal amount=49000
+Q26 Hoa don theo nhan vien lap
+  E01 count=1 total=60000 collected=0 outstanding=60000
+  E02 count=1 total=49000 collected=49000 outstanding=0
+  E03 count=0 total=0 collected=0 outstanding=0
+Q27 Tien con phai thu theo khach
+  C02 amount=60000
+Q28 Thuc thu theo khu
+  CS01 computer=24000 food=25000 collected=49000
+  CS02 computer=0 food=0 collected=0
+Q29 Thanh toan sai lech
+  []
+Q30 Phien hoan tat chua co hoa don
+  S03 customer=Cristiano Ronaldo computer=PC04 section=Khu VIP start=2026-10-05T10:00 end=2026-10-05T11:00 status=COMPLETED

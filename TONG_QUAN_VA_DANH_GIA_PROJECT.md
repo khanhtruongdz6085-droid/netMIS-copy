@@ -47,10 +47,10 @@ Project sử dụng danh sách đối tượng Java trong bộ nhớ. Chạy l�
 | Thanh toán | Có một lần thu đủ tiền cho mỗi hóa đơn |
 | Doanh thu thực thu | Có tổng Payment.amount |
 | Exception và demo | Có |
-| Kiểm tra nghiệp vụ | Có năm chương trình kiểm tra độc lập |
-| 30 truy vấn trong phần 4 đặc tả | Chưa viết code; đặc tả gốc nêu phần này là yêu cầu truy vấn chưa code |
+| Kiểm tra nghiệp vụ | Có sáu chương trình kiểm tra độc lập |
+| 30 truy vấn trong phần 4 đặc tả | Đã triển khai đủ Q01–Q30 bằng Stream/Lambda trong các DAO; chạy Main --queries |
 | Tìm kiếm, sửa, xóa toàn bộ danh mục qua một menu | Chưa có |
-| Lưu dữ liệu lâu dài, database | Chưa có |
+| Lưu dữ liệu lâu dài | Chưa có; dữ liệu trong bộ nhớ |
 | Tài khoản khách hàng | Có thông tin tài khoản, số dư, trạng thái và kiểm tra khi mở phiên |
 | GUI, đăng nhập/xác thực, phân quyền, nạp/trừ tiền, thao tác đồng thời | Chưa có |
 | Nâng/hạ hạng khách đang tồn tại | Chưa có nghiệp vụ quản lý chuyển hạng |
@@ -64,62 +64,24 @@ NetCafeMIS/
 ├── pom.xml
 ├── run.ps1
 ├── README.md
-├── Dac_ta_quan_ly_quan_net.md
-├── HUONG_DAN_NGHIEP_VU.md
-├── MODEL_DESCRIPTION.md
-├── GIAI_THICH_GOI_MON.md
+├── TRUY_VAN_30_JAVA.md
 ├── EXPECTED_OUTPUT.txt
-├── TONG_QUAN_VA_DANH_GIA_PROJECT.md
+├── EXPECTED_QUERY_OUTPUT.txt
 └── src/
     ├── main/java/netcafe/
     │   ├── Main.java
-    │   ├── ExceptionDemo.java
-    │   ├── DiscountDemo.java
-    │   ├── EarlyEndDemo.java
-    │   ├── Identifiable.java
-    │   ├── Chargeable.java
-    │   ├── IDiscount.java
+    │   ├── QueryDemo.java
+    │   ├── dao/              # 10 DAO, ListDAO và QueryResults
     │   ├── model/
-    │   │   ├── ComputerSection.java
-    │   │   ├── Computer.java
-    │   │   ├── Customer.java
-    │   │   ├── CustomerAccount.java
-    │   │   ├── Employee.java
-    │   │   ├── Session.java
-    │   │   ├── Food.java
-    │   │   ├── FoodService.java
-    │   │   ├── FoodOrderDetail.java
-    │   │   ├── Receipt.java
-    │   │   ├── Payment.java
-    │   │   ├── Checks.java
-    │   │   └── customer/
-    │   │       ├── NormalCustomer.java
-    │   │       ├── MemberCustomer.java
-    │   │       └── VipCustomer.java
-    │   ├── Service/
-    │   │   ├── NetCafe.java
-    │   │   ├── NetCafeData.java
-    │   │   ├── ServiceChecks.java
-    │   │   ├── CatalogService.java
-    │   │   ├── SessionService.java
-    │   │   ├── FoodOrderService.java
-    │   │   ├── ReceiptService.java
-    │   │   └── PaymentService.java
+    │   │   ├── NetSpecs/     # ComputerSection, Computer, Employee, Food
+    │   │   ├── customer/     # Customer và ba hạng khách
+    │   │   └── ...           # CustomerAccount, Session, hóa đơn, thanh toán, chi tiết món
+    │   ├── Service/          # Service và dữ liệu dùng chung; thực thể FoodService
     │   ├── enums/
-    │   │   ├── ComputerStatus.java
-    │   │   ├── SessionStatus.java
-    │   │   ├── EmployeeStatus.java
-    │   │   ├── AccountStatus.java
-    │   │   └── PaymentMethod.java
     │   └── exception/
-    │       ├── EXCEPTIONS.md
-    │       └── 14 file exception nghiệp vụ
     └── test/java/netcafe/
-        ├── NetCafeChecks.java
-        ├── AccountChecks.java
-        ├── EarlyEndChecks.java
-        ├── SessionEndChecks.java
-        └── DiscountChecks.java
+        ├── Checks/           # Sáu bộ kiểm tra, gồm QueryChecks
+        └── Demo/             # DiscountDemo, ExceptionDemo, EarlyEndDemo
 ```
 
 Các thư mục `.idea`, `target` hoặc `out` phục vụ IDE và biên dịch. Khi đọc nghiệp vụ, ưu tiên `src/main/java` và `src/test/java`.
@@ -133,9 +95,10 @@ Các thư mục `.idea`, `target` hoặc `out` phục vụ IDE và biên dịch.
 | Exception nghiệp vụ | 14 |
 | Interface | 3 |
 | Enum | 5 |
-| Main và ba demo | 4 |
-| Năm chương trình kiểm tra | 5 |
-| **Tổng** | **54** |
+| Main, QueryDemo và ba demo | 5 |
+| Sáu chương trình kiểm tra | 6 |
+| DAO và lớp hỗ trợ truy vấn | 12 |
+| **Tổng** | **68** |
 
 Số lượng này tính theo file Java, không tính các lớp nội bộ hoặc đối tượng ẩn danh trong chương trình kiểm tra. Nhiều file không tự chứng minh thiết kế tốt; cần xem mỗi file có trách nhiệm đủ rõ và phù hợp với quy mô bài hay không.
 
@@ -149,6 +112,8 @@ flowchart TD
     Cafe --> Orders["FoodOrderService"]
     Cafe --> Receipts["ReceiptService"]
     Cafe --> Payments["PaymentService"]
+    Cafe --> DAO["DAO: Stream/Lambda"]
+    DAO --> Data
     Catalog --> Data["NetCafeData: các List dùng chung"]
     Sessions --> Data
     Orders --> Data
@@ -188,7 +153,7 @@ erDiagram
     Receipt ||--o| Payment : paid
 ```
 
-Đây là mô hình quan hệ nghiệp vụ được biểu diễn bằng tham chiếu Java. Project chưa sử dụng khóa ngoại của database. Các ràng buộc mã và liên kết được kiểm tra trong model/service, không phải bởi một hệ quản trị cơ sở dữ liệu.
+Đây là mô hình quan hệ nghiệp vụ được biểu diễn bằng tham chiếu Java. Các liên kết được giữ bằng tham chiếu đối tượng. Các ràng buộc mã và liên kết được kiểm tra trong model/service, không phải bởi một hệ quản trị cơ sở dữ liệu.
 
 | Quan hệ | Cách hiểu |
 |---|---|
@@ -444,7 +409,7 @@ Kiểm tra phiên đã COMPLETED, nhân viên ACTIVE và phiên chưa có hóa �
 
 ### 8.6. NetCafe
 
-Đầu mối khởi tạo dữ liệu và service của một quán. Cung cấp getter service, getter danh sách và phương thức chuyển tiếp.
+Đầu mối khởi tạo dữ liệu, service và DAO của một quán. Cung cấp getter service, getter DAO, getter danh sách và phương thức chuyển tiếp. DAO nhận chính các backing list và giữ nguyên tham chiếu đối tượng của service; đọc lại sẽ thấy các cập nhật nghiệp vụ.
 
 Getter danh sách trả `Collections.unmodifiableList(...)`. Bên gọi không thể thêm/xóa phần tử trực tiếp qua danh sách trả về, nhưng vẫn có thể gọi các phương thức public trên đối tượng nằm trong danh sách. Đây là danh sách chỉ đọc về cấu trúc, không phải một bản sao bất biến toàn bộ dữ liệu.
 
@@ -452,7 +417,7 @@ Getter danh sách trả `Collections.unmodifiableList(...)`. Bên gọi không t
 
 Giữ các danh sách dùng chung: sections, computers, customers, accounts, employees, foods, sessions, services, receipts, payments. Các FoodOrderDetail nằm trong FoodService thay vì một danh sách toàn cục riêng.
 
-Lớp và các danh sách chỉ được tiếp cận trong package Service. Nó không phải database và không lưu dữ liệu ra ổ đĩa.
+Lớp dữ liệu chỉ được tiếp cận trực tiếp trong package Service. NetCafe truyền view chỉ đọc của cùng các list cho DAO; dữ liệu không được lưu ra ổ đĩa.
 
 ### 8.8. ServiceChecks
 
@@ -711,7 +676,7 @@ Minh họa khách bắt đầu 3h rồi yêu cầu kết thúc và thanh toán l
 
 ### 14.4. Các chương trình kiểm tra độc lập
 
-Năm class kiểm tra độc lập bằng main, không dùng JUnit.
+Sáu class kiểm tra độc lập bằng main, không dùng JUnit.
 
 | Chương trình | Nội dung chính | Số kiểm tra trong lần rà soát |
 |---|---|---:|
@@ -719,12 +684,13 @@ Năm class kiểm tra độc lập bằng main, không dùng JUnit.
 | DiscountChecks | Ba lớp con, tỷ lệ, làm tròn, hóa đơn chốt, thanh toán sau giảm và tỷ lệ sai | 42 |
 | AccountChecks | Dữ liệu tài khoản, đăng ký, username, trạng thái và lịch sử phiên theo tài khoản | 54 |
 | EarlyEndChecks | Khách kết thúc phiên theo giờ thực tế, tính tiền và kiểm tra thời điểm thanh toán | 40 |
-| SessionEndChecks | Hai cách kết thúc, giờ gọi món, trạng thái sau thất bại, đơn khóa và danh sách chỉ đọc | 130 |
-| **Tổng** | | **309** |
+| SessionEndChecks | Hai cách kết thúc, giờ gọi món, trạng thái sau thất bại, đơn khóa và danh sách chỉ đọc | 132 |
+| QueryChecks | Đủ 30 truy vấn, dữ liệu rỗng, mốc ngày, đồng hạng, nguồn chung và đối soát | 169 |
+| **Tổng** | | **480** |
 
 DiscountChecks có TestCustomer nội bộ để giả lập tỷ lệ không hợp lệ hoặc thay đổi, phục vụ kiểm tra; nó không phải một hạng khách thứ tư dùng trong ứng dụng.
 
-Số kiểm tra là số lần gọi hàm kiểm tra của năm chương trình, không phải phần trăm độ bao phủ code. Chúng không được Maven Surefire tự chạy theo thiết kế hiện tại.
+Số kiểm tra là số lần gọi hàm kiểm tra của sáu chương trình, không phải phần trăm độ bao phủ code. Chúng không được Maven Surefire tự chạy theo thiết kế hiện tại.
 
 ## 15. Cách mở và kiểm chứng
 
@@ -734,7 +700,7 @@ Số kiểm tra là số lần gọi hàm kiểm tra của năm chương trình,
 2. Chọn JDK phù hợp; mã nguồn hướng tới Java 8.
 3. Đảm bảo encoding UTF-8.
 4. Chạy Main, DiscountDemo, ExceptionDemo hoặc EarlyEndDemo theo mục đích.
-5. Chạy main của NetCafeChecks, DiscountChecks, AccountChecks, EarlyEndChecks và SessionEndChecks để kiểm tra.
+5. Chạy main của NetCafeChecks, DiscountChecks, AccountChecks, EarlyEndChecks, SessionEndChecks và QueryChecks để kiểm tra. Main --queries chạy đủ 30 truy vấn.
 
 ### 15.2. PowerShell
 
@@ -749,6 +715,8 @@ Set-Location 'D:\OOP\NetCafeMIS'
 .\run.ps1 -EarlyEndDemo
 .\run.ps1 -EarlyEndChecks
 .\run.ps1 -SessionEndChecks
+.\run.ps1 -Queries
+.\run.ps1 -QueryChecks
 ```
 
 run.ps1 tìm JDK từ JAVA_HOME, PATH hoặc JDK đi kèm IntelliJ, biên dịch nguồn và chạy class được chọn. Có thể truyền `-JavaHome 'C:\duong-dan-jdk'`.
@@ -760,11 +728,11 @@ mvn package
 java -jar target/netcafe-mis-1.0.0.jar
 ```
 
-pom.xml khai báo Java 8, encoding UTF-8 và main class netcafe.Main. Khi dùng Maven, cần một môi trường có Maven và các plugin tương ứng. Chạy package không thay thế việc chạy năm chương trình kiểm tra bằng main.
+pom.xml khai báo Java 8, encoding UTF-8 và main class netcafe.Main. Khi dùng Maven, cần một môi trường có Maven và các plugin tương ứng. Chạy package không thay thế việc chạy sáu chương trình kiểm tra bằng main.
 
 ### 15.4. Bằng chứng của lần rà soát này
 
-Đã build bằng Maven 3.9.9 trên JDK 21 với -Dmaven.compiler.release=8 thành công. JAR khớp EXPECTED_OUTPUT.txt, DiscountDemo, ExceptionDemo và EarlyEndDemo chạy đúng; NetCafeChecks báo 43 kiểm tra qua, DiscountChecks báo 42 kiểm tra qua, AccountChecks báo 54 kiểm tra qua, EarlyEndChecks báo 40 kiểm tra qua, SessionEndChecks báo 130 kiểm tra qua; tổng cộng 309 kiểm tra.
+Đã build bằng Maven 3.9.9 trên JDK 21 với -Dmaven.compiler.release=8 thành công. JAR khớp EXPECTED_OUTPUT.txt, DiscountDemo, ExceptionDemo và EarlyEndDemo chạy đúng; NetCafeChecks báo 43 kiểm tra qua, DiscountChecks báo 42 kiểm tra qua, AccountChecks báo 54 kiểm tra qua, EarlyEndChecks báo 40 kiểm tra qua, SessionEndChecks báo 132 kiểm tra qua, QueryChecks báo 169 kiểm tra qua; tổng cộng 480 kiểm tra.
 
 Ví dụ Java hoàn chỉnh ở mục 13 cũng đã được trích từ tài liệu, biên dịch và chạy riêng; cả tổng hóa đơn và thực thu đều là 135600 như phần giải thích.
 
@@ -797,7 +765,7 @@ Dự án có một luồng nghiệp vụ đủ cụ thể để giải thích OO
 4. **Tiền và lịch sử được quan tâm:** BigDecimal, HALF_UP, PriceAtOrder và số tiền chốt trên Receipt giúp tránh nhiều lỗi thường gặp ở bài quản lý.
 5. **Phân biệt hóa đơn với tiền đã thu:** doanh thu lấy Payment, không lấy tất cả Receipt. Đây là một quyết định nghiệp vụ đúng với phạm vi thu đủ một lần.
 6. **Có kiểm tra lỗi:** kiểm tra cả trạng thái sau thất bại, mã trùng, thời gian, số lượng, thanh toán lặp, giá lịch sử và mức giảm.
-7. **Dễ chạy ở phạm vi bài học:** không cần framework, database hoặc thư viện ngoài để chạy nguồn bằng JDK.
+7. **Dễ chạy ở phạm vi bài học:** không cần framework, dịch vụ hoặc thư viện chạy ngoài để chạy nguồn bằng JDK.
 
 ### 17.2. Kiểm tra kết thúc phiên và giới hạn còn lại
 
@@ -840,9 +808,9 @@ Nếu cần mở rộng, có thể dùng một đối tượng dòng yêu cầu 
 
 ### 17.5. Kiểm tra đang cần chạy thủ công
 
-Năm main kiểm tra có giá trị, đã phát hiện và xác nhận nhiều quy tắc. Tuy nhiên người dùng có thể chạy Maven package mà chưa chạy chúng. Bước học tiếp theo hợp lý là đưa các kiểm tra quan trọng sang JUnit để build tự động chạy và báo lỗi rõ.
+Sáu main kiểm tra có giá trị, đã phát hiện và xác nhận nhiều quy tắc. Tuy nhiên người dùng có thể chạy Maven package mà chưa chạy chúng. Bước học tiếp theo hợp lý là đưa các kiểm tra quan trọng sang JUnit để build tự động chạy và báo lỗi rõ.
 
-309 kiểm tra hiện tại xác nhận các tình huống được kiểm tra, không chứng minh tất cả đường sử dụng của API đều an toàn. Setter trạng thái máy công khai vẫn có thể tạo dữ liệu không nhất quán như mục 17.2.
+480 kiểm tra hiện tại xác nhận các tình huống được kiểm tra, không chứng minh tất cả đường sử dụng của API đều an toàn. Setter trạng thái máy công khai vẫn có thể tạo dữ liệu không nhất quán như mục 17.2.
 
 ### 17.6. Một số giới hạn khác
 
@@ -855,7 +823,7 @@ Năm main kiểm tra có giá trị, đã phát hiện và xác nhận nhiều q
 
 ### 17.7. Số class có quá nhiều không?
 
-54 file Java gồm 14 exception ngắn, 5 enum, 3 interface và 9 file Main/demo/kiểm tra. Không nên đánh đồng số file với số nghiệp vụ phức tạp.
+68 file Java gồm 14 exception ngắn, 5 enum, 3 interface, 12 file DAO/hỗ trợ và 11 file Main/QueryDemo/demo/kiểm tra. Không nên đánh đồng số file với số nghiệp vụ phức tạp.
 
 Nhóm model theo ERD và ba lớp con khách có lý do rõ ràng. Nhóm dễ giảm nhất là lớp điều phối và các lớp chuyển tiếp. Mình sẽ ưu tiên **hiểu luồng, bảo vệ trạng thái và giảm việc phải nhảy file**, thay vì cố thêm mẫu thiết kế để tăng số class.
 
@@ -869,10 +837,10 @@ Nhóm model theo ERD và ba lớp con khách có lý do rõ ràng. Nhóm dễ gi
 | 4 | Ghi rõ phần giảm giá mở rộng trong đặc tả và báo cáo | Thiết kế, code, tài liệu khớp nhau |
 | 5 | Chuyển các kiểm tra cốt lõi sang JUnit nếu bài cho phép | Kiểm tra tự động khi build |
 | 6 | Thêm menu console nếu cần tương tác thực tế | Chuyển demo thành chương trình sử dụng được |
-| 7 | Viết các truy vấn theo yêu cầu giai đoạn tiếp theo | Hoàn thiện phần tra cứu/thống kê |
-| 8 | Cân nhắc lưu file/database khi học đến nội dung đó | Giữ dữ liệu sau khi đóng chương trình |
+| 7 | Bổ sung truy vấn mới khi yêu cầu thay đổi; Q01–Q30 đã có | Mở rộng phần tra cứu/thống kê |
+| 8 | Cân nhắc lưu file khi học đến nội dung đó | Giữ dữ liệu sau khi đóng chương trình |
 
-Đối với bài OOP cơ bản, mục 1–4 đáng ưu tiên. Database và GUI chỉ nên thêm khi phù hợp yêu cầu môn và thời gian nhóm có thể giải thích, kiểm tra.
+Đối với bài OOP cơ bản, mục 1–4 đáng ưu tiên. Lưu file và GUI chỉ nên thêm khi phù hợp yêu cầu môn và thời gian nhóm có thể giải thích, kiểm tra.
 
 ## 19. Câu hỏi thường gặp khi bảo vệ bài
 
@@ -944,3 +912,7 @@ Khi trình bày, chọn một khách Member chơi 2 giờ và gọi 3 loại mó
 - [Mô tả Session và FoodService](MODEL_DESCRIPTION.md): mô tả riêng hai model; khi đọc cần phân biệt tiền máy gốc với tổng hóa đơn sau giảm trong tài liệu này.
 - [Exception](src/main/java/netcafe/exception/EXCEPTIONS.md): các lỗi nghiệp vụ.
 - [Kết quả mẫu](EXPECTED_OUTPUT.txt): console của Main.
+
+## 21. DAO và 30 truy vấn trong bộ nhớ
+
+Các DAO đọc cùng List và cùng thực thể với service; không có đường insert/update/delete bỏ qua nghiệp vụ. `findAll()` trả view chỉ đọc đang dùng; kết quả truy vấn là snapshot danh sách chỉ đọc. Các lớp kết quả tổng hợp nằm trong QueryResults. Xem [TRUY_VAN_30_JAVA.md](TRUY_VAN_30_JAVA.md) để đối chiếu đủ Q01–Q30 với đặc tả, tham số và kết quả mẫu. Main --queries gọi tất cả, không thay đổi dữ liệu.

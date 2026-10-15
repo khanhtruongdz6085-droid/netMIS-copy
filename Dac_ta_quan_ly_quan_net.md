@@ -189,7 +189,7 @@ Mỗi thực thể trong ERD tương ứng một lớp Java. Thuộc tính dùng
 
 `FoodService.details` chứa các dòng món; mỗi dòng tham chiếu một `Food` trong danh mục. Các quan hệ một–nhiều còn lại được truy xuất bằng cách lọc danh sách theo tham chiếu. Khóa ghép của `FoodOrderDetail` được bảo đảm bằng việc không có hai dòng cùng món trong một `FoodService`.
 
-**Tổ chức project `NetCafeMIS`:** package `netcafe.model` chứa 10 lớp trên; `netcafe.enums` chứa các enum; `netcafe.Main` chứa `main()` để khởi tạo dữ liệu, điều phối mở/kết thúc phiên và ghi nhận thanh toán. Công thức tính tiền đặt trong lớp tương ứng. Dữ liệu được giữ bằng `List<T>`; phần 4 chỉ đặc tả truy vấn, chưa viết code truy vấn.
+**Tổ chức project `NetCafeMIS`:** các thực thể nằm trong `netcafe.model`, `netcafe.model.NetSpecs`, `netcafe.model.customer` và lớp `netcafe.Service.FoodService`; `netcafe.enums` chứa các enum; `netcafe.Main` chứa `main()` để khởi tạo dữ liệu, điều phối mở/kết thúc phiên và ghi nhận thanh toán. Công thức tính tiền đặt trong lớp tương ứng. Dữ liệu được giữ bằng `List<T>`; 30 truy vấn ở phần 4 đã được triển khai bằng Stream/Lambda trong package `netcafe.dao`, chạy bằng `Main --queries`.
 
 ## 3. Tạo dữ liệu cho thực thể, quan hệ và enum, interface 
 
@@ -312,9 +312,9 @@ Ví dụ: `C01 → S01 → PC01 → CS01`; `S01 → SV01 → {F01, F02}`; `S01 �
 
 Kiểm tra dữ liệu: chỉ `PC02` có phiên đang hoạt động; `R01 = 24000 + 25000 = 49000` đã thanh toán; `R02 = 30000 + 30000 = 60000` chưa thanh toán; `S03` đã kết thúc nhưng chưa có hóa đơn. Tổng hóa đơn **109000 = 49000 đã thu + 60000 chưa thu**. Chi phí phiên `S04` chưa tính vào doanh thu.
 
-## 4. Mỗi thành viên viết 10 câu truy vấn — chưa code
+## 4. Mỗi thành viên viết 10 câu truy vấn — đã triển khai Java Stream
 
-Các câu dưới đây dùng tên và liên kết ở phần 1. Hóa đơn đã trả được xác định qua `Payment`; doanh thu lấy từ `Payment.Amount`. Với thống kê theo ngày, sử dụng từ 00:00 đến trước 00:00 ngày kế tiếp. Tổng hoặc số lượng trên tập rỗng bằng 0; truy vấn giá trị lớn nhất giữ tất cả kết quả đồng hạng.
+Xem [bảng ánh xạ 30 truy vấn tới DAO và kết quả mẫu](TRUY_VAN_30_JAVA.md). Các câu dưới đây dùng tên và liên kết ở phần 1. Hóa đơn đã trả được xác định qua `Payment`; doanh thu lấy từ `Payment.Amount`. Với thống kê theo ngày, sử dụng từ 00:00 đến trước 00:00 ngày kế tiếp. Tổng hoặc số lượng trên tập rỗng bằng 0; truy vấn giá trị lớn nhất giữ tất cả kết quả đồng hạng.
 
 ### 4.1. Thành viên 1 — Khu máy, máy tính, phiên sử dụng
 

@@ -7,7 +7,9 @@ param(
     [switch]$AccountChecks,
     [switch]$EarlyEndDemo,
     [switch]$EarlyEndChecks,
-    [switch]$SessionEndChecks
+    [switch]$SessionEndChecks,
+    [switch]$QueryChecks,
+    [switch]$Queries
 )
 $ErrorActionPreference = 'Stop'
 $compilerPath = $null
@@ -37,5 +39,10 @@ if ($AccountChecks) { $mainClass = 'netcafe.Checks.AccountChecks' }
 if ($EarlyEndDemo) { $mainClass = 'netcafe.Demo.EarlyEndDemo' }
 if ($EarlyEndChecks) { $mainClass = 'netcafe.Checks.EarlyEndChecks' }
 if ($SessionEndChecks) { $mainClass = 'netcafe.Checks.SessionEndChecks' }
-& $runnerPath -cp $outputPath $mainClass
+if ($QueryChecks) { $mainClass = 'netcafe.Checks.QueryChecks' }
+if ($Queries) {
+    & $runnerPath -cp $outputPath netcafe.Main --queries
+} else {
+    & $runnerPath -cp $outputPath $mainClass
+}
 if ($LASTEXITCODE -ne 0) { throw 'Program failed.' }
