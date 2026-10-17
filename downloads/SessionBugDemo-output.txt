@@ -1,0 +1,10 @@
+1) Concurrent open: failed rounds=26/100
+Example: success=2, stored=2, results=[OK, ComputerUnavailableException, ComputerUnavailableException, ComputerUnavailableException, ComputerUnavailableException, ComputerUnavailableException, ComputerUnavailableException, OK]
+2) Ended at 16:00, price=12000/hour:
+amountAt(17:00)=24000
+calculateAmount()=12000
+Receipt computer amount=12000
+3) Duration=0.9 seconds, price=12000/hour:
+Duration.getSeconds()=0
+calculateAmount()=0
+Proportional charge: 12000 * 0.9 / 3600 = 3
