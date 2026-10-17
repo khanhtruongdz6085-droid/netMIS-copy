@@ -1,0 +1,22 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", fontname="DejaVu Sans", nodesep=0.35, ranksep=0.55, pad=0.2];
+ node [shape=box, style="rounded,filled", fillcolor="#eef5fb", color="#2a5575", fontname="DejaVu Sans", fontsize=12, margin="0.15,0.10"];
+ edge [color="#54758a", fontname="DejaVu Sans", fontsize=10, arrowsize=0.7];
+ UI [label="KHỞI TẠO VÀ GIAO DIỆN\nMain • SampleData\nConsoleMenu • ConsoleInput • ReportMenu",fillcolor="#dceaf5"];
+ Facade [label="NetCafe\nĐiểm gọi chung của các nghiệp vụ"];
+ Services [label="NGHIỆP VỤ\nCatalogService • SessionService\nFoodOrderService • ReceiptService • PaymentService",fillcolor="#e9f4eb"];
+ Models [label="MÔ HÌNH\nKhu • Máy • Khách • Nhân viên • Món\nPhiên • Đơn • Chi tiết • Hóa đơn • Thanh toán"];
+ DAOs [label="TRUY CẬP DỮ LIỆU\n9 DAO kế thừa MemoryDao<T>\nMỗi DAO giữ một List<T>"];
+ Context [label="NetCafeData\nTạo và giữ 9 DAO\nThực hiện DaoQueryContext",fillcolor="#fff2db"];
+ Contracts [label="HỢP ĐỒNG VÀ HỖ TRỢ\nIdentifiable • Chargeable\nChecks • ServiceChecks • DaoQuerySupport\nEnum • Exception",fillcolor="#f1eef7"];
+ UI -> Facade [label="gọi thao tác"];
+ Facade -> Services;
+ UI -> DAOs [label="xem báo cáo",constraint=false];
+ Services -> Models [label="kiểm tra, thay đổi trạng thái"];
+ Services -> DAOs [label="kiểm tra, lưu"];
+ DAOs -> Context [label="đọc danh sách liên quan",style=dashed];
+ Context -> DAOs [label="giữ các DAO",style=dashed,constraint=false];
+ Models -> Contracts [style=dashed,label="sử dụng / thực hiện"];
+ DAOs -> Contracts [style=dashed,constraint=false];
+ {rank=same;Models;DAOs;}
+}

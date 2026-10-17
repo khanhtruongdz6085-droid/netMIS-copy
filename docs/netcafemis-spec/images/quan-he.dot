@@ -1,0 +1,29 @@
+digraph G {
+ graph [rankdir=TB,bgcolor="white",fontname="DejaVu Sans",nodesep=0.65,ranksep=1.0,pad=0.25,splines=polyline];
+ node [shape=box,style="rounded,filled",fillcolor="#edf5fb",color="#2a5575",fontname="DejaVu Sans",fontsize=12,margin="0.15,0.12"];
+ edge [color="#54758a",fontname="DejaVu Sans",fontsize=10,arrowsize=0.65,labeldistance=1.8];
+ ComputerSection [label="ComputerSection\nKhu máy"];
+ Computer [label="Computer\nMáy tính"];
+ Customer [label="Customer\nKhách hàng"];
+ Employee [label="Employee\nNhân viên"];
+ Session [label="Session\nPhiên chơi",fillcolor="#e9f4eb"];
+ FoodService [label="FoodService\nLần gọi món"];
+ Food [label="Food\nMón / tồn kho"];
+ Receipt [label="Receipt\nHóa đơn",fillcolor="#fff2db"];
+ FoodOrderDetail [label="FoodOrderDetail\nDòng món"];
+ Payment [label="Payment\nThanh toán",fillcolor="#fff2db"];
+ ComputerSection -> Computer [label="chứa",taillabel="1",headlabel="0..n"];
+ Computer -> Session [label="được dùng",taillabel="1",headlabel="0..n"];
+ Customer -> Session [label="chơi",taillabel="1",headlabel="0..n"];
+ Employee -> Session [label="mở phiên\n1 → 0..n"];
+ Session -> FoodService [label="có lần gọi",taillabel="1",headlabel="0..n"];
+ Employee -> FoodService [label="xử lý\n1 → 0..n",constraint=false];
+ FoodService -> FoodOrderDetail [label="gồm các dòng",taillabel="1",headlabel="1..n"];
+ Food -> FoodOrderDetail [label="được gọi",taillabel="1",headlabel="0..n"];
+ Session -> Receipt [label="được lập",taillabel="1",headlabel="0..1"];
+ Employee -> Receipt [label="lập\n1 → 0..n",constraint=false];
+ Receipt -> Payment [label="được thanh toán",taillabel="1",headlabel="0..1"];
+ {rank=same;Computer;Customer;Employee;}
+ {rank=same;FoodService;Food;Receipt;}
+ {rank=same;FoodOrderDetail;Payment;}
+}
